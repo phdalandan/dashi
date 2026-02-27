@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid hsl(var(--border)); }
+
+:root {
+  --background: 220 20% 7%;
+  --foreground: 210 20% 92%;
+  --card: 220 18% 10%;
+  --card-foreground: 210 20% 92%;
+  --popover: 220 18% 10%;
+  --popover-foreground: 210 20% 92%;
+  --primary: 199 89% 48%;
+  --primary-foreground: 220 20% 7%;
+  --secondary: 220 16% 16%;
+  --secondary-foreground: 210 20% 85%;
+  --muted: 220 14% 14%;
+  --muted-foreground: 215 15% 55%;
+  --accent: 199 89% 48%;
+  --accent-foreground: 220 20% 7%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 220 14% 18%;
+  --input: 220 14% 18%;
+  --ring: 199 89% 48%;
+  --radius: 0.75rem;
+  --glow: 199 89% 48%;
+}
+
+:root.light {
+  --background: 0 0% 97%;
+  --foreground: 220 20% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 12%;
+  --primary: 199 89% 42%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 92%;
+  --secondary-foreground: 220 16% 30%;
+  --muted: 220 14% 92%;
+  --muted-foreground: 215 15% 45%;
+  --accent: 199 89% 42%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 13% 85%;
+  --input: 220 13% 85%;
+  --ring: 199 89% 42%;
+  --glow: 199 89% 42%;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Utility classes */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.w-full { width: 100%; }
+.text-center { text-align: center; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.hidden { display: none; }
+.shrink-0 { flex-shrink: 0; }
+.space-y-2 > * + * { margin-top: 0.5rem; }
+.space-y-3 > * + * { margin-top: 0.75rem; }
+.space-y-4 > * + * { margin-top: 1rem; }
+.space-y-6 > * + * { margin-top: 1.5rem; }
+.space-y-8 > * + * { margin-top: 2rem; }
+.max-w-2xl { max-width: 42rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.overflow-hidden { overflow: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+.cursor-pointer { cursor: pointer; }
+.transition-all { transition: all 0.3s ease; }
+.transition-colors { transition: color 0.2s, background-color 0.2s, border-color 0.2s; }
+.transition-opacity { transition: opacity 0.2s; }
+.pointer-events-none { pointer-events: none; }
+
+/* Glow effects */
+.glow-text { text-shadow: 0 0 20px hsl(var(--glow) / 0.5); }
+:root.light .glow-text { text-shadow: none; }
+.glow-border-hover:hover {
+  box-shadow: 0 0 0 1px hsl(var(--glow) / 0.4), 0 0 25px -3px hsl(var(--glow) / 0.25);
+}
+
+/* Button base */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius); font-size: 0.875rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; outline: none;
+  border: 1px solid transparent;
+}
+.btn:focus-visible { box-shadow: 0 0 0 2px hsl(var(--ring)); }
+.btn-ghost {
+  background: transparent; color: hsl(var(--foreground));
+}
+.btn-ghost:hover { background: hsl(var(--secondary)); }
+.btn-primary {
+  background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-destructive {
+  background: hsl(var(--destructive)); color: hsl(var(--destructive-foreground));
+}
+.btn-sm { height: 2rem; padding: 0 0.75rem; font-size: 0.8rem; }
+.btn-icon { height: 2.25rem; width: 2.25rem; padding: 0; }
+
+/* Input */
+.input {
+  display: block; width: 100%; height: 2.5rem; padding: 0.5rem 0.75rem;
+  border-radius: var(--radius); font-size: 0.875rem;
+  background: hsl(var(--secondary) / 0.5);
+  border: 1px solid hsl(var(--border) / 0.5);
+  color: hsl(var(--foreground));
+  outline: none; transition: border-color 0.15s;
+}
+.input:focus { border-color: hsl(var(--ring)); }
+.input::placeholder { color: hsl(var(--muted-foreground)); }
+
+/* Input with prefix */
+.input-group {
+  display: flex; align-items: center; border-radius: var(--radius);
+  background: hsl(var(--secondary) / 0.5);
+  border: 1px solid hsl(var(--border) / 0.5);
+  overflow: hidden; transition: border-color 0.15s;
+}
+.input-group:focus-within { border-color: hsl(var(--ring)); }
+.input-prefix {
+  padding: 0 0 0 0.75rem; font-size: 0.8rem; white-space: nowrap;
+  color: hsl(var(--muted-foreground)); user-select: none;
+}
+.input-group .input {
+  border: none; background: transparent; border-radius: 0;
+  padding-left: 0.25rem;
+}
+.input-group .input:focus { border-color: transparent; }
+
+/* Card */
+.card {
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border) / 0.4);
+  background: hsl(var(--card) / 0.6);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+}
+.card-title { font-size: 1rem; font-weight: 600; color: hsl(var(--foreground)); }
+.card-desc { font-size: 0.8rem; color: hsl(var(--muted-foreground)); margin-top: 0.25rem; }
+
+/* Switch */
+.switch {
+  position: relative; display: inline-flex; height: 1.25rem; width: 2.25rem;
+  cursor: pointer; border-radius: 9999px;
+  background: hsl(var(--muted)); transition: background 0.2s;
+}
+.switch.active { background: hsl(var(--primary)); }
+.switch-thumb {
+  position: absolute; top: 2px; left: 2px;
+  height: calc(1.25rem - 4px); width: calc(1.25rem - 4px);
+  border-radius: 9999px; background: white;
+  transition: transform 0.2s;
+}
+.switch.active .switch-thumb { transform: translateX(1rem); }
+
+/* Dialog Overlay */
+.dialog-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.15s ease;
+}
+.dialog-content {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: var(--radius);
+  padding: 1.5rem; width: 95%; max-width: 28rem;
+  max-height: 85vh; overflow-y: auto;
+  animation: scaleIn 0.15s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+/* Label */
+.label { display: block; font-size: 0.8rem; font-weight: 500; color: hsl(var(--foreground)); }
+
+/* Select */
+.select {
+  display: block; width: 100%; height: 2.5rem; padding: 0.5rem 0.75rem;
+  border-radius: var(--radius); font-size: 0.875rem;
+  background: hsl(var(--secondary) / 0.5);
+  border: 1px solid hsl(var(--border) / 0.5);
+  color: hsl(var(--foreground));
+  outline: none; appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+.select:focus { border-color: hsl(var(--ring)); }
+
+/* Checkbox */
+.checkbox-wrap {
+  display: flex; align-items: center; gap: 0.625rem;
+  padding: 0.375rem 0.5rem; border-radius: 0.375rem; cursor: pointer;
+  transition: background 0.15s;
+}
+.checkbox-wrap:hover { background: hsl(var(--secondary) / 0.6); }
+.checkbox-box {
+  width: 1rem; height: 1rem; border-radius: 0.25rem;
+  border: 2px solid hsl(var(--border));
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; flex-shrink: 0;
+}
+.checkbox-box.checked {
+  background: hsl(var(--primary)); border-color: hsl(var(--primary));
+}
+.checkbox-box.checked::after {
+  content: '✓'; color: hsl(var(--primary-foreground)); font-size: 0.65rem; font-weight: 700;
+}
+
+/* Service tile grid */
+.tile-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; max-width: 42rem; margin: 0 auto;
+}
+@media (max-width: 640px) {
+  .tile-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+}
+@media (max-width: 400px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Service tile */
+.tile {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  border-radius: 0.75rem; border: 1px solid hsl(var(--border) / 0.4);
+  background: hsl(var(--card) / 0.6); padding: 1rem;
+  backdrop-filter: blur(8px); transition: all 0.3s;
+  text-decoration: none; color: inherit; position: relative;
+}
+.tile:hover {
+  transform: scale(1.05); background: hsl(var(--card) / 0.8);
+  box-shadow: 0 0 0 1px hsl(var(--glow) / 0.4), 0 0 25px -3px hsl(var(--glow) / 0.25);
+}
+.tile-icon {
+  display: flex; align-items: center; justify-content: center;
+  height: 3.5rem; width: 3.5rem; border-radius: 0.5rem;
+  background: hsl(var(--secondary) / 0.5);
+}
+.tile-icon img { height: 2.5rem; width: 2.5rem; border-radius: 0.25rem; }
+.tile-name {
+  font-size: 0.75rem; font-weight: 500; color: hsl(var(--muted-foreground));
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center;
+}
+.tile-url {
+  font-size: 0.5rem; color: hsl(var(--muted-foreground) / 0.6);
+  position: absolute; bottom: 0.25rem; left: 0; right: 0; padding: 0 0.25rem;
+  text-align: center; opacity: 0; transition: opacity 0.2s; pointer-events: none;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tile-wrap:hover .tile-url { opacity: 1; }
+
+/* Tile actions */
+.tile-actions {
+  position: absolute; top: -0.375rem; right: -0.375rem;
+  display: flex; gap: 0.25rem; opacity: 0; transition: opacity 0.2s;
+  z-index: 10;
+}
+.tile-wrap:hover .tile-actions { opacity: 1; }
+.tile-wrap { position: relative; }
+.tile-action-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 1.5rem; height: 1.5rem; border-radius: 9999px;
+  cursor: pointer; border: none; transition: all 0.15s;
+}
+.tile-action-edit {
+  background: hsl(var(--primary) / 0.9); color: hsl(var(--primary-foreground));
+}
+.tile-action-edit:hover { background: hsl(var(--primary)); }
+.tile-action-delete {
+  background: hsl(var(--destructive) / 0.9); color: hsl(var(--destructive-foreground));
+}
+.tile-action-delete:hover { background: hsl(var(--destructive)); }
+
+/* Add tile button */
+.tile-add {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.5rem; border-radius: 0.75rem;
+  border: 1px dashed hsl(var(--border) / 0.3); padding: 1rem;
+  transition: all 0.3s; cursor: pointer; background: transparent;
+  color: hsl(var(--muted-foreground) / 0.4);
+}
+.tile-add:hover {
+  border-color: hsl(var(--primary) / 0.5);
+  background: hsl(var(--card) / 0.4);
+}
+
+/* Section header */
+.section-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  max-width: 42rem; margin: 0 auto 0.5rem; width: 100%;
+}
+.section-title {
+  font-size: 0.95rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.2em; color: hsl(var(--muted-foreground));
+  font-family: 'JetBrains Mono', monospace;
+}
+.section-actions {
+  display: flex; gap: 0.25rem; opacity: 0; transition: opacity 0.2s;
+}
+.section-header:hover .section-actions { opacity: 1; }
+.section-action-btn {
+  padding: 0.25rem; cursor: pointer; background: transparent;
+  color: hsl(var(--muted-foreground)); border: none; border-radius: 0.25rem;
+  transition: color 0.15s;
+}
+.section-action-btn:hover { color: hsl(var(--primary)); }
+.section-action-btn.danger:hover { color: hsl(var(--destructive)); }
+
+/* Toast */
+.toast-container {
+  position: fixed; bottom: 1rem; right: 1rem; z-index: 200;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.toast {
+  padding: 0.75rem 1rem; border-radius: var(--radius);
+  background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground)); font-size: 0.85rem;
+  animation: slideIn 0.2s ease, fadeOut 0.3s ease 2.5s forwards;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* Color swatch */
+.color-swatch {
+  height: 2.5rem; width: 2.5rem; border-radius: 9999px;
+  cursor: pointer; transition: transform 0.15s; border: 2px solid transparent;
+}
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.selected { border-color: hsl(var(--foreground)); }
+
+/* Pin Gate */
+.pin-container {
+  display: flex; min-height: 100vh; align-items: center; justify-content: center;
+}
+.pin-input-group { display: flex; gap: 0.5rem; }
+.pin-slot {
+  width: 3.5rem; height: 3.5rem; text-align: center; font-size: 1.25rem;
+  border-radius: var(--radius);
+  background: hsl(var(--card) / 0.6); border: 1px solid hsl(var(--border) / 0.5);
+  color: hsl(var(--foreground)); outline: none; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+}
+.pin-slot:focus { border-color: hsl(var(--ring)); }
+.pin-slot.error { border-color: hsl(var(--destructive)); }
+.pin-shake { animation: shake 0.4s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+}
+
+/* Background overlay */
+.bg-overlay {
+  position: fixed; inset: 0; background-size: cover; background-position: center;
+  opacity: 0.15; pointer-events: none;
+}
+
+/* Drag mode */
+.drag-mode .tile { cursor: grab; }
+.drag-mode .tile:active { cursor: grabbing; }
+.drag-handle {
+  position: absolute; top: 0.25rem; left: 0.25rem;
+  color: hsl(var(--muted-foreground) / 0.6);
+}
+.tile-wrap.dragging { opacity: 0.4; }
+.tile-wrap.drag-over .tile {
+  box-shadow: 0 0 0 2px hsl(var(--primary));
+  transform: scale(1.03);
+}
+
+/* Metric display on tiles */
+.tile-metrics {
+  display: flex; flex-direction: column; align-items: center; gap: 0.125rem; width: 100%;
+}
+.tile-metric {
+  display: flex; align-items: center; gap: 0.25rem; font-size: 0.625rem; line-height: 1.2;
+}
+.tile-metric-label { color: hsl(var(--muted-foreground) / 0.7); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tile-metric-value { font-weight: 600; color: hsl(var(--foreground) / 0.8); }
+
+/* SVG icons inline */
+svg.icon { width: 1.25rem; height: 1.25rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg.icon-sm { width: 0.875rem; height: 0.875rem; }
+svg.icon-lg { width: 1.5rem; height: 1.5rem; }
+svg.icon-xl { width: 2rem; height: 2rem; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+// ─── Minimal runtime ───
+const { useState, useEffect, useCallback, useRef, createElement: h, Fragment } = React;
+const e = h; // alias
+
+// ─── Icons as components (SVG) ───
+const Icon = (props) => {
+  const { d, size = 'icon', fill = 'none', className = '', ...rest } = props;
+  const cls = `icon${size === 'sm' ? ' icon-sm' : size === 'lg' ? ' icon-lg' : size === 'xl' ? ' icon-xl' : ''}` + (className ? ' ' + className : '');
+  return e('svg', { className: cls, viewBox: '0 0 24 24', xmlns: 'http://www.w3.org/2000/svg', ...rest },
+    ...(Array.isArray(d) ? d.map((p, i) => e('path', { key: i, d: p, fill: typeof fill === 'string' ? fill : (fill[i] || 'none') })) : [e('path', { d, fill })])
+  );
+};
+
+const Icons = {
+  Plus: (p) => Icon({ d: 'M12 5v14M5 12h14', ...p }),
+  Settings: (p) => Icon({ d: ['M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'], ...p }),
+  FolderPlus: (p) => Icon({ d: ['M12 10v6', 'M9 13h6', 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z'], ...p }),
+  ArrowUpDown: (p) => Icon({ d: ['M7 15l5 5 5-5', 'M7 9l5-5 5 5'], ...p }),
+  Check: (p) => Icon({ d: 'M20 6L9 17l-5-5', ...p }),
+  ArrowLeft: (p) => Icon({ d: ['M19 12H5', 'M12 19l-7-7 7-7'], ...p }),
+  Pencil: (p) => Icon({ d: ['M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z', 'M15 5l4 4'], size: 'sm', ...p }),
+  Trash2: (p) => Icon({ d: ['M3 6h18', 'M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6', 'M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2', 'M10 11v6', 'M14 11v6'], size: 'sm', ...p }),
+  Globe: (p) => Icon({ d: ['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z', 'M2 12h20', 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'], ...p }),
+  Lock: (p) => Icon({ d: ['M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z', 'M7 11V7a5 5 0 0 1 10 0v4'], ...p }),
+  GripVertical: (p) => Icon({ d: ['M9 5h.01', 'M15 5h.01', 'M9 12h.01', 'M15 12h.01', 'M9 19h.01', 'M15 19h.01'], size: 'sm', ...p }),
+  X: (p) => Icon({ d: ['M18 6L6 18', 'M6 6l12 12'], ...p }),
+};
+
+// ─── LocalStorage helpers ───
+const STORE_KEYS = { services: 'dashi_services', sections: 'dashi_sections', settings: 'dashi_settings' };
+
+function loadJSON(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch { return fallback; }
+}
+function saveJSON(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+
+const uuid = () => crypto.randomUUID ? crypto.randomUUID() : 'xxxx-xxxx-xxxx'.replace(/x/g, () => ((Math.random() * 16) | 0).toString(16));
+
+// ─── Known Services (auto-detect) ───
+const svgIcon = (path, color) =>
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}">${path}</svg>`)}`;
+
+const KNOWN_SERVICES = [
+  { name: 'Home Assistant', type: 'homeassistant', icon: svgIcon('<path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>', '#03A9F4'), patterns: ['8123','homeassistant','hass'] },
+  { name: 'Jellyfin', type: 'jellyfin', icon: svgIcon('<circle cx="12" cy="12" r="10"/>', '#00A4DC'), patterns: ['8096','jellyfin'] },
+  { name: 'Sonarr', type: 'sonarr', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#35C5F4'), patterns: ['8989','sonarr'] },
+  { name: 'Radarr', type: 'radarr', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#FFC230'), patterns: ['7878','radarr'] },
+  { name: 'Prowlarr', type: 'prowlarr', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#FFC230'), patterns: ['9696','prowlarr'] },
+  { name: 'qBittorrent', type: 'qbittorrent', icon: svgIcon('<circle cx="12" cy="12" r="10"/>', '#2F67BA'), patterns: ['8080','qbittorrent'] },
+  { name: 'Portainer', type: 'portainer', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#13BEF9'), patterns: ['9000','9443','portainer'] },
+  { name: 'OPNsense', type: 'opnsense', icon: svgIcon('<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>', '#D94F00'), patterns: ['opnsense'] },
+  { name: 'Proxmox', type: 'proxmox', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#E57000'), patterns: ['8006','proxmox'] },
+  { name: 'Plex', type: 'plex', icon: svgIcon('<polygon points="12,2 22,22 2,22"/>', '#E5A00D'), patterns: ['32400','plex'] },
+  { name: 'Grafana', type: 'grafana', icon: svgIcon('<circle cx="12" cy="12" r="10"/>', '#F46800'), patterns: ['3000','grafana'] },
+  { name: 'Pi-hole', type: 'pihole', icon: svgIcon('<circle cx="12" cy="12" r="10"/>', '#96060C'), patterns: ['pihole','pi-hole'] },
+  { name: 'Unraid', type: 'unraid', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#F15A2C'), patterns: ['unraid'] },
+  { name: 'Nginx Proxy Manager', type: 'nginx', icon: svgIcon('<rect x="3" y="3" width="18" height="18" rx="3"/>', '#009639'), patterns: ['81','nginx'] },
+];
+
+function detectService(url) {
+  const lower = url.toLowerCase();
+  for (const svc of KNOWN_SERVICES) {
+    if (svc.patterns.some(p => lower.includes(p))) return svc;
+  }
+  return null;
+}
+
+// ─── Default settings ───
+const DEFAULT_SETTINGS = {
+  accent_color: '199 89% 48%',
+  show_service_names: true,
+  refresh_interval: 30,
+  auth_enabled: false,
+  pin: '',
+  background_url: '',
+  theme: 'dark',
+};
+
+// ─── Toast system ───
+let toastId = 0;
+let toastListeners = [];
+let toasts = [];
+function showToast(msg) {
+  const id = ++toastId;
+  toasts = [...toasts, { id, msg }];
+  toastListeners.forEach(fn => fn([...toasts]));
+  setTimeout(() => {
+    toasts = toasts.filter(t => t.id !== id);
+    toastListeners.forEach(fn => fn([...toasts]));
+  }, 3000);
+}
+
+function ToastContainer() {
+  const [items, setItems] = useState([]);
+  useEffect(() => { toastListeners.push(setItems); return () => { toastListeners = toastListeners.filter(f => f !== setItems); }; }, []);
+  if (!items.length) return null;
+  return e('div', { className: 'toast-container' },
+    items.map(t => e('div', { key: t.id, className: 'toast' }, t.msg))
+  );
+}
+
+// ─── PRESET COLORS ───
+const PRESET_COLORS = [
+  { name: 'Cyan', value: '199 89% 48%' },
+  { name: 'Purple', value: '270 70% 55%' },
+  { name: 'Green', value: '142 71% 45%' },
+  { name: 'Orange', value: '25 95% 53%' },
+  { name: 'Red', value: '0 72% 51%' },
+  { name: 'Pink', value: '330 80% 60%' },
+  { name: 'Blue', value: '217 91% 60%' },
+  { name: 'Amber', value: '45 93% 47%' },
+];
+
+// ─── PIN GATE COMPONENT ───
+function PinGate({ storedPin, accentColor, onUnlock }) {
+  const [values, setValues] = useState(Array(storedPin.length).fill(''));
+  const [error, setError] = useState(false);
+  const refs = useRef([]);
+
+  const handleChange = (i, val) => {
+    if (!/^\d?$/.test(val)) return;
+    const nv = [...values];
+    nv[i] = val;
+    setValues(nv);
+    if (val && i < storedPin.length - 1) refs.current[i + 1]?.focus();
+    const full = nv.join('');
+    if (full.length === storedPin.length) {
+      if (full === storedPin) { onUnlock(); }
+      else { setError(true); setTimeout(() => { setError(false); setValues(Array(storedPin.length).fill('')); refs.current[0]?.focus(); }, 800); }
+    }
+  };
+
+  const handleKeyDown = (i, ev) => {
+    if (ev.key === 'Backspace' && !values[i] && i > 0) refs.current[i - 1]?.focus();
+  };
+
+  const style = { '--glow': accentColor, '--primary': accentColor, '--accent': accentColor, '--ring': accentColor };
+  return e('div', { className: 'pin-container', style },
+    e('div', { className: 'flex flex-col items-center gap-6' },
+      e('div', { className: 'flex flex-col items-center gap-2' },
+        e('div', { style: { borderRadius: '9999px', background: `hsl(${accentColor} / 0.1)`, padding: '1rem' } },
+          e(Icons.Lock, { size: 'xl' })
+        ),
+        e('h1', { className: 'glow-text', style: { fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em', color: `hsl(${accentColor})` } }, 'Dashi'),
+        e('p', { style: { fontSize: '0.85rem', color: 'hsl(var(--muted-foreground))' } }, 'Enter your PIN to unlock')
+      ),
+      e('div', { className: `pin-input-group${error ? ' pin-shake' : ''}` },
+        Array.from({ length: storedPin.length }).map((_, i) =>
+          e('input', {
+            key: i, ref: el => refs.current[i] = el,
+            type: 'password', inputMode: 'numeric', maxLength: 1,
+            value: values[i],
+            onChange: ev => handleChange(i, ev.target.value),
+            onKeyDown: ev => handleKeyDown(i, ev),
+            className: `pin-slot${error ? ' error' : ''}`,
+            autoFocus: i === 0,
+          })
+        )
+      ),
+      error && e('p', { style: { fontSize: '0.85rem', color: 'hsl(var(--destructive))' } }, 'Incorrect PIN')
+    )
+  );
+}
+
+// ─── ADD/EDIT SERVICE DIALOG ───
+function AddServiceDialog({ open, onClose, sections, onSave, editingService, onUpdate, defaultSectionId }) {
+  const [url, setUrl] = useState('');
+  const [name, setName] = useState('');
+  const [sectionId, setSectionId] = useState('');
+  const [iconUrl, setIconUrl] = useState('');
+
+  useEffect(() => {
+    if (editingService) {
+      setUrl(editingService.url); setName(editingService.name);
+      setSectionId(editingService.section_id || '');
+      setIconUrl(editingService.icon_url || '');
+    } else {
+      setUrl(''); setName(''); setSectionId(defaultSectionId || '');
+      setIconUrl('');
+    }
+  }, [editingService, open, defaultSectionId]);
+
+  // Auto-detect service name and icon from URL
+  useEffect(() => {
+    if (editingService) return;
+    const detected = detectService(url);
+    if (detected) { setName(detected.name); setIconUrl(detected.icon); }
+  }, [url, editingService]);
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    const data = { url, name, section_id: sectionId || null, icon_url: iconUrl || null };
+    if (editingService && onUpdate) { onUpdate(editingService.id, data); }
+    else { onSave(data); }
+    onClose();
+  };
+
+  if (!open) return null;
+
+  return e('div', { className: 'dialog-overlay', onClick: (ev) => { if (ev.target === ev.currentTarget) onClose(); } },
+    e('div', { className: 'dialog-content' },
+      e('div', { className: 'flex items-center justify-between', style: { marginBottom: '1rem' } },
+        e('h2', { style: { fontSize: '1.1rem', fontWeight: 600 } }, editingService ? 'Edit Service' : 'Add Service'),
+        e('button', { className: 'btn btn-ghost btn-icon', onClick: onClose }, e(Icons.X))
+      ),
+      e('form', { onSubmit: handleSubmit, className: 'space-y-4' },
+        e('div', { className: 'space-y-2' },
+          e('label', { className: 'label' }, 'URL'),
+          e('div', { className: 'input-group' },
+            e('span', { className: 'input-prefix' }, 'http://'),
+            e('input', { className: 'input', value: url.replace(/^https?:\/\//, ''), onChange: ev => setUrl('http://' + ev.target.value.replace(/^https?:\/\//, '')), placeholder: '192.168.1.100:8096', required: true })
+          )
+        ),
+        e('div', { className: 'space-y-2' },
+          e('label', { className: 'label' }, 'Display Name'),
+          e('input', { className: 'input', value: name, onChange: ev => setName(ev.target.value), placeholder: 'Jellyfin', required: true })
+        ),
+        e('div', { className: 'space-y-2' },
+          e('label', { className: 'label' }, 'Section'),
+          e('select', { className: 'select', value: sectionId, onChange: ev => setSectionId(ev.target.value) },
+            e('option', { value: '' }, 'No section'),
+            sections.map(s => e('option', { key: s.id, value: s.id }, s.name))
+          )
+        ),
+        e('div', { className: 'space-y-2' },
+          e('label', { className: 'label' }, 'Icon URL (optional)'),
+          e('div', { className: 'flex items-center gap-2' },
+            iconUrl && e('img', { src: iconUrl, alt: '', style: { height: '2rem', width: '2rem', borderRadius: '0.25rem', flexShrink: 0 } }),
+            e('input', { className: 'input', value: iconUrl, onChange: ev => setIconUrl(ev.target.value), placeholder: 'https://example.com/icon.png', style: { fontSize: '0.8rem' } })
+          )
+        ),
+        e('button', { type: 'submit', className: 'btn btn-primary w-full', style: { height: '2.5rem' } }, editingService ? 'Update' : 'Add Service')
+      )
+    )
+  );
+}
+
+// ─── SERVICE TILE ───
+function ServiceTile({ service, showName, onEdit, onDelete, reorderMode, onDragStart, onDragOver, onDragEnd, onDrop, isDragOver, isDragging }) {
+  return e('div', {
+    className: 'tile-wrap' + (isDragging ? ' dragging' : '') + (isDragOver ? ' drag-over' : ''),
+    style: { cursor: reorderMode ? 'grab' : undefined },
+    draggable: reorderMode ? true : false,
+    onDragStart: reorderMode ? (ev) => { ev.dataTransfer.effectAllowed = 'move'; onDragStart && onDragStart(service.id); } : undefined,
+    onDragOver: reorderMode ? (ev) => { ev.preventDefault(); ev.dataTransfer.dropEffect = 'move'; onDragOver && onDragOver(service.id); } : undefined,
+    onDragEnd: reorderMode ? () => { onDragEnd && onDragEnd(); } : undefined,
+    onDrop: reorderMode ? (ev) => { ev.preventDefault(); onDrop && onDrop(service.id); } : undefined,
+  },
+    e(reorderMode ? 'div' : 'a', {
+      href: reorderMode ? undefined : service.url,
+      target: reorderMode ? undefined : '_blank',
+      rel: 'noopener noreferrer',
+      className: 'tile',
+      onClick: reorderMode ? ev => ev.preventDefault() : undefined,
+    },
+      reorderMode && e('div', { className: 'drag-handle' }, e(Icons.GripVertical)),
+      e('div', { className: 'tile-icon' },
+        service.icon_url
+          ? e('img', { src: service.icon_url, alt: service.name })
+          : e(Icons.Globe, { size: 'xl' })
+      ),
+      showName && e('span', { className: 'tile-name' }, service.name),
+      e('span', { className: 'tile-url' }, service.url),
+    ),
+    !reorderMode && e('div', { className: 'tile-actions' },
+      e('button', { className: 'tile-action-btn tile-action-edit', onClick: (ev) => { ev.preventDefault(); ev.stopPropagation(); onEdit(service); }, title: 'Edit' },
+        e(Icons.Pencil)
+      ),
+      e('button', { className: 'tile-action-btn tile-action-delete', onClick: (ev) => { ev.preventDefault(); ev.stopPropagation(); onDelete(service.id); }, title: 'Delete' },
+        e(Icons.Trash2)
+      )
+    )
+  );
+}
+
+// ─── SECTION COMPONENT ───
+function DashboardSection({ section, services, showNames, onEditService, onDeleteService, onRenameSection, onDeleteSection, reorderMode, onAddService, onReorder }) {
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(section.name);
+  const [dragId, setDragId] = useState(null);
+  const [dragOverId, setDragOverId] = useState(null);
+
+  const handleRename = () => {
+    if (name.trim() && name !== section.name) onRenameSection(section.id, name.trim());
+    setEditing(false);
+  };
+
+  const handleDrop = (targetId) => {
+    if (!dragId || dragId === targetId) { setDragId(null); setDragOverId(null); return; }
+    const sorted = services.slice().sort((a, b) => a.sort_order - b.sort_order);
+    const ids = sorted.map(s => s.id);
+    const oldIdx = ids.indexOf(dragId);
+    const newIdx = ids.indexOf(targetId);
+    if (oldIdx === -1 || newIdx === -1) return;
+    ids.splice(oldIdx, 1);
+    ids.splice(newIdx, 0, dragId);
+    onReorder(ids);
+    setDragId(null); setDragOverId(null);
+  };
+
+  return e('div', { className: 'space-y-3' },
+    e('div', { className: 'section-header' },
+      editing
+        ? e('input', {
+            className: 'input', value: name, onChange: ev => setName(ev.target.value),
+            onBlur: handleRename, onKeyDown: ev => ev.key === 'Enter' && handleRename(),
+            autoFocus: true, style: { height: '1.75rem', width: '12rem', fontSize: '0.75rem', fontWeight: 600 }
+          })
+        : e('h2', { className: 'section-title' }, section.name),
+      e('div', { className: 'section-actions' },
+        e('button', { className: 'section-action-btn', onClick: () => setEditing(true), title: 'Rename' }, e(Icons.Pencil)),
+        e('button', { className: 'section-action-btn danger', onClick: () => onDeleteSection(section.id), title: 'Delete section' }, e(Icons.Trash2))
+      )
+    ),
+    e('div', { className: 'tile-grid' },
+      services.slice().sort((a, b) => a.sort_order - b.sort_order).map(svc =>
+        e(ServiceTile, {
+          key: svc.id, service: svc, showName: showNames, onEdit: onEditService, onDelete: onDeleteService, reorderMode,
+          onDragStart: (id) => setDragId(id),
+          onDragOver: (id) => setDragOverId(id),
+          onDragEnd: () => { setDragId(null); setDragOverId(null); },
+          onDrop: handleDrop,
+          isDragOver: dragOverId === svc.id && dragId !== svc.id,
+          isDragging: dragId === svc.id,
+        })
+      ),
+      !reorderMode && onAddService && e('button', { key: 'add', className: 'tile-add', onClick: onAddService, title: 'Add service' },
+        e('div', { className: 'tile-icon', style: { background: 'transparent' } }, e(Icons.Plus, { size: 'lg' }))
+      )
+    )
+  );
+}
+
+// ─── SETTINGS PAGE ───
+function SettingsPage({ settings, updateSettings, goBack }) {
+  const [newPin, setNewPin] = useState('');
+  const accentColor = settings.accent_color;
+  const style = { '--glow': accentColor, '--primary': accentColor, '--accent': accentColor, '--ring': accentColor };
+
+  const handleSavePin = () => {
+    if (newPin.length < 4) { showToast('PIN must be at least 4 digits'); return; }
+    updateSettings({ pin: newPin });
+    setNewPin('');
+    showToast('PIN updated');
+  };
+
+  return e('div', { style: { ...style, minHeight: '100vh', padding: '1.5rem' } },
+    e('div', { className: 'mx-auto max-w-2xl space-y-6' },
+      e('div', { className: 'flex items-center gap-3' },
+        e('button', { className: 'btn btn-ghost btn-icon', onClick: goBack }, e(Icons.ArrowLeft)),
+        e('h1', { style: { fontSize: '1.5rem', fontWeight: 700 } }, 'Settings')
+      ),
+
+      // Security
+      e('div', { className: 'card space-y-4' },
+        e('div', null,
+          e('div', { className: 'card-title' }, 'Security'),
+          e('div', { className: 'card-desc' }, 'Protect your dashboard with a PIN lock')
+        ),
+        e('div', { className: 'flex items-center justify-between' },
+          e('span', { className: 'label' }, 'Enable PIN lock'),
+          e('div', { className: `switch${settings.auth_enabled ? ' active' : ''}`, onClick: () => updateSettings({ auth_enabled: !settings.auth_enabled }) },
+            e('div', { className: 'switch-thumb' })
+          )
+        ),
+        settings.auth_enabled && e('div', { className: 'space-y-2' },
+          e('span', { className: 'label' }, 'Set PIN (4-6 digits)'),
+          e('div', { className: 'flex gap-2' },
+            e('input', {
+              type: 'password', inputMode: 'numeric', maxLength: 6,
+              value: newPin, onChange: ev => setNewPin(ev.target.value.replace(/\D/g, '')),
+              placeholder: settings.pin ? '••••' : 'Enter new PIN',
+              className: 'input font-mono', style: { width: '8rem', letterSpacing: '0.15em' }
+            }),
+            e('button', { type: 'button', className: 'btn btn-primary btn-sm', onClick: handleSavePin, disabled: newPin.length < 4 }, 'Save')
+          ),
+          settings.pin && e('p', { style: { fontSize: '0.75rem', color: 'hsl(var(--muted-foreground))' } }, 'PIN is set. Enter a new one to change it.')
+        )
+      ),
+
+      // Accent Color
+      e('div', { className: 'card' },
+        e('div', { className: 'card-title', style: { marginBottom: '1rem' } }, 'Accent Color'),
+        e('div', { className: 'flex', style: { flexWrap: 'wrap', gap: '0.75rem' } },
+          PRESET_COLORS.map(c =>
+            e('button', {
+              key: c.value, className: `color-swatch${accentColor === c.value ? ' selected' : ''}`,
+              style: { backgroundColor: `hsl(${c.value})` },
+              onClick: () => updateSettings({ accent_color: c.value }),
+              title: c.name
+            })
+          )
+        )
+      ),
+
+      // Background Image
+      e('div', { className: 'card space-y-3' },
+        e('div', { className: 'card-title' }, 'Background Image'),
+        settings.background_url && e('div', { style: { position: 'relative', height: '8rem', overflow: 'hidden', borderRadius: '0.5rem' } },
+          e('img', { src: settings.background_url, alt: 'Background', style: { width: '100%', height: '100%', objectFit: 'cover' } }),
+          e('button', { className: 'btn btn-destructive btn-sm', style: { position: 'absolute', bottom: '0.5rem', right: '0.5rem' }, onClick: () => updateSettings({ background_url: '' }) }, 'Remove')
+        ),
+        e('div', { className: 'space-y-2' },
+          e('span', { className: 'label' }, 'Background URL'),
+          e('input', { className: 'input', value: settings.background_url || '', onChange: ev => updateSettings({ background_url: ev.target.value }), placeholder: 'https://example.com/image.jpg', style: { fontSize: '0.8rem' } })
+        )
+      ),
+
+      // Display
+      e('div', { className: 'card space-y-4' },
+        e('div', { className: 'card-title' }, 'Display'),
+        e('div', { className: 'flex items-center justify-between' },
+          e('span', { className: 'label' }, 'Dark mode'),
+          e('div', { className: `switch${(settings.theme || 'dark') === 'dark' ? ' active' : ''}`, onClick: () => updateSettings({ theme: (settings.theme || 'dark') === 'dark' ? 'light' : 'dark' }) },
+            e('div', { className: 'switch-thumb' })
+          )
+        ),
+        e('div', { className: 'flex items-center justify-between' },
+          e('span', { className: 'label' }, 'Show service names'),
+          e('div', { className: `switch${settings.show_service_names ? ' active' : ''}`, onClick: () => updateSettings({ show_service_names: !settings.show_service_names }) },
+            e('div', { className: 'switch-thumb' })
+          )
+        )
+      ),
+
+      // Data Management
+      e('div', { className: 'card space-y-4' },
+        e('div', { className: 'card-title' }, 'Data Management'),
+        e('div', { className: 'card-desc' }, 'Export or import your dashboard configuration'),
+        e('div', { className: 'flex gap-2' },
+          e('button', { className: 'btn btn-ghost btn-sm', style: { border: '1px solid hsl(var(--border))' }, onClick: () => {
+            const data = { services: loadJSON(STORE_KEYS.services, []), sections: loadJSON(STORE_KEYS.sections, []), settings: loadJSON(STORE_KEYS.settings, DEFAULT_SETTINGS) };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob); a.download = 'dashi-backup.json'; a.click();
+            showToast('Backup exported');
+          }}, 'Export Backup'),
+          e('button', { className: 'btn btn-ghost btn-sm', style: { border: '1px solid hsl(var(--border))' }, onClick: () => {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = '.json';
+            input.onchange = (ev) => {
+              const file = ev.target.files[0]; if (!file) return;
+              const reader = new FileReader();
+              reader.onload = (re) => {
+                try {
+                  const data = JSON.parse(re.target.result);
+                  if (data.services) saveJSON(STORE_KEYS.services, data.services);
+                  if (data.sections) saveJSON(STORE_KEYS.sections, data.sections);
+                  if (data.settings) saveJSON(STORE_KEYS.settings, { ...DEFAULT_SETTINGS, ...data.settings });
+                  showToast('Backup imported! Reloading...');
+                  setTimeout(() => location.reload(), 1000);
+                } catch { showToast('Invalid backup file'); }
+              };
+              reader.readAsText(file);
+            };
+            input.click();
+          }}, 'Import Backup')
+        )
+      )
+    )
+  );
+}
+
+// ─── UNSECTIONED TILES (with drag support) ───
+function UnsectionedTiles({ services, showNames, sections, reorderMode, onEditService, onDeleteService, onReorder, onAddService }) {
+  const [dragId, setDragId] = useState(null);
+  const [dragOverId, setDragOverId] = useState(null);
+
+  const handleDrop = (targetId) => {
+    if (!dragId || dragId === targetId) { setDragId(null); setDragOverId(null); return; }
+    const sorted = services.slice().sort((a, b) => a.sort_order - b.sort_order);
+    const ids = sorted.map(s => s.id);
+    const oldIdx = ids.indexOf(dragId);
+    const newIdx = ids.indexOf(targetId);
+    if (oldIdx === -1 || newIdx === -1) return;
+    ids.splice(oldIdx, 1);
+    ids.splice(newIdx, 0, dragId);
+    onReorder(ids);
+    setDragId(null); setDragOverId(null);
+  };
+
+  return e('div', { className: 'space-y-3' },
+    sections.length > 0 && e('h2', { className: 'section-title', style: { maxWidth: '42rem', margin: '0 auto' } }, 'Uncategorized'),
+    e('div', { className: 'tile-grid' },
+      services.slice().sort((a, b) => a.sort_order - b.sort_order).map(svc =>
+        e(ServiceTile, {
+          key: svc.id, service: svc, showName: showNames, onEdit: onEditService, onDelete: onDeleteService, reorderMode,
+          onDragStart: (id) => setDragId(id),
+          onDragOver: (id) => setDragOverId(id),
+          onDragEnd: () => { setDragId(null); setDragOverId(null); },
+          onDrop: handleDrop,
+          isDragOver: dragOverId === svc.id && dragId !== svc.id,
+          isDragging: dragId === svc.id,
+        })
+      ),
+      !reorderMode && e('button', { key: 'add-unsectioned', className: 'tile-add', onClick: onAddService, title: 'Add service' },
+        e('div', { className: 'tile-icon', style: { background: 'transparent' } }, e(Icons.Plus, { size: 'lg' }))
+      )
+    )
+  );
+}
+
+// ─── MAIN DASHBOARD ───
+function Dashboard() {
+  const [services, setServices] = useState(() => loadJSON(STORE_KEYS.services, []));
+  const [sections, setSections] = useState(() => loadJSON(STORE_KEYS.sections, []));
+  const [settings, setSettings] = useState(() => ({ ...DEFAULT_SETTINGS, ...loadJSON(STORE_KEYS.settings, DEFAULT_SETTINGS) }));
+
+  const [page, setPage] = useState('dashboard');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingService, setEditingService] = useState(null);
+  const [defaultSectionId, setDefaultSectionId] = useState(null);
+  const [newSectionName, setNewSectionName] = useState('');
+  const [showSectionInput, setShowSectionInput] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
+  const [reorderMode, setReorderMode] = useState(false);
+
+  // Persist on change
+  useEffect(() => { saveJSON(STORE_KEYS.services, services); }, [services]);
+  useEffect(() => { saveJSON(STORE_KEYS.sections, sections); }, [sections]);
+  useEffect(() => { saveJSON(STORE_KEYS.settings, settings); }, [settings]);
+
+  // Apply theme class to html element
+  useEffect(() => {
+    const root = document.documentElement;
+    if ((settings.theme || 'dark') === 'light') { root.classList.add('light'); }
+    else { root.classList.remove('light'); }
+  }, [settings.theme]);
+
+  const updateSettings = (updates) => setSettings(prev => ({ ...prev, ...updates }));
+
+  // Sections CRUD
+  const addSection = (name) => {
+    const id = uuid();
+    setSections(prev => [...prev, { id, name, sort_order: prev.length }]);
+  };
+  const deleteSection = (id) => {
+    setSections(prev => prev.filter(s => s.id !== id));
+    setServices(prev => prev.map(s => s.section_id === id ? { ...s, section_id: null } : s));
+  };
+  const renameSection = (id, name) => setSections(prev => prev.map(s => s.id === id ? { ...s, name } : s));
+
+  // Services CRUD
+  const addService = (data) => {
+    const id = uuid();
+    setServices(prev => [...prev, { id, ...data, sort_order: prev.length }]);
+    showToast('Service added');
+  };
+  const updateService = (id, updates) => {
+    setServices(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
+    showToast('Service updated');
+  };
+  const deleteService = (id) => {
+    setServices(prev => prev.filter(s => s.id !== id));
+    showToast('Service removed');
+  };
+
+  const reorderServices = (orderedIds) => {
+    setServices(prev => {
+      const map = new Map(prev.map(s => [s.id, s]));
+      const updated = orderedIds.map((id, i) => ({ ...map.get(id), sort_order: i }));
+      const reorderedSet = new Set(orderedIds);
+      const untouched = prev.filter(s => !reorderedSet.has(s.id));
+      return [...untouched, ...updated].sort((a, b) => a.sort_order - b.sort_order);
+    });
+  };
+
+  const handleAddSection = () => {
+    if (!newSectionName.trim()) return;
+    addSection(newSectionName.trim());
+    setNewSectionName('');
+    setShowSectionInput(false);
+  };
+
+  // PIN gate
+  const authEnabled = settings.auth_enabled;
+  const pin = settings.pin;
+  if (authEnabled && pin && !unlocked && page === 'dashboard') {
+    return e(Fragment, null,
+      e(PinGate, { storedPin: pin, accentColor: settings.accent_color, onUnlock: () => setUnlocked(true) }),
+      e(ToastContainer)
+    );
+  }
+
+  // Settings page
+  if (page === 'settings') {
+    return e(Fragment, null,
+      e(SettingsPage, { settings, updateSettings, goBack: () => setPage('dashboard') }),
+      e(ToastContainer)
+    );
+  }
+
+  const accentColor = settings.accent_color;
+  const showNames = settings.show_service_names;
+  const unsectionedServices = services.filter(s => !s.section_id);
+  const style = { '--glow': accentColor, '--primary': accentColor, '--accent': accentColor, '--ring': accentColor };
+
+  return e(Fragment, null,
+    e('div', { className: `${reorderMode ? 'drag-mode ' : ''}`, style: { ...style, minHeight: '100vh', background: 'hsl(var(--background))' } },
+      settings.background_url && e('div', { className: 'bg-overlay', style: { backgroundImage: `url(${settings.background_url})` } }),
+      e('div', { style: { position: 'relative', zIndex: 10 } },
+        // Header
+        e('header', { className: 'flex items-center justify-between', style: { borderBottom: '1px solid hsl(var(--border) / 0.3)', padding: '1rem 1.5rem' } },
+          e('h1', { className: 'glow-text', style: { fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em', color: `hsl(${accentColor})` } }, 'Dashi'),
+          e('div', { className: 'flex items-center gap-2' },
+            e('button', {
+              className: `btn ${reorderMode ? 'btn-primary' : 'btn-ghost'} btn-icon`,
+              onClick: () => setReorderMode(!reorderMode),
+              title: reorderMode ? 'Done reordering' : 'Rearrange tiles'
+            }, reorderMode ? e(Icons.Check) : e(Icons.ArrowUpDown)),
+            e('button', { className: 'btn btn-ghost btn-icon', onClick: () => { setDefaultSectionId(null); setDialogOpen(true); }, title: 'Add service' }, e(Icons.Plus)),
+            e('button', { className: 'btn btn-ghost btn-icon', onClick: () => setShowSectionInput(!showSectionInput), title: 'Add section' }, e(Icons.FolderPlus)),
+            e('button', { className: 'btn btn-ghost btn-icon', onClick: () => setPage('settings'), title: 'Settings' }, e(Icons.Settings))
+          )
+        ),
+
+        // Section input
+        showSectionInput && e('div', { className: 'flex items-center gap-2', style: { padding: '0.75rem 1.5rem', borderBottom: '1px solid hsl(var(--border) / 0.2)' } },
+          e('input', { className: 'input', value: newSectionName, onChange: ev => setNewSectionName(ev.target.value), placeholder: 'Section name (e.g. Media)', onKeyDown: ev => ev.key === 'Enter' && handleAddSection(), autoFocus: true, style: { maxWidth: '16rem' } }),
+          e('button', { className: 'btn btn-primary btn-sm', onClick: handleAddSection }, 'Add'),
+          e('button', { className: 'btn btn-ghost btn-sm', onClick: () => setShowSectionInput(false) }, 'Cancel')
+        ),
+
+        // Main content
+        e('main', { className: 'space-y-8', style: { padding: '1.5rem' } },
+          sections.map(section =>
+            e(DashboardSection, {
+              key: section.id, section,
+              services: services.filter(s => s.section_id === section.id),
+              showNames,
+              onEditService: svc => { setEditingService(svc); setDialogOpen(true); },
+              onDeleteService: deleteService,
+              onRenameSection: renameSection,
+              onDeleteSection: deleteSection,
+              reorderMode,
+              onAddService: () => { setDefaultSectionId(section.id); setDialogOpen(true); },
+              onReorder: reorderServices,
+            })
+          ),
+
+          unsectionedServices.length > 0 && e(UnsectionedTiles, {
+            services: unsectionedServices,
+            showNames,
+            sections,
+            reorderMode,
+            onEditService: s => { setEditingService(s); setDialogOpen(true); },
+            onDeleteService: deleteService,
+            onReorder: reorderServices,
+            onAddService: () => { setDefaultSectionId(null); setDialogOpen(true); },
+          }),
+
+          services.length === 0 && sections.length === 0 && e('div', { className: 'flex flex-col items-center justify-center', style: { paddingTop: '8rem', paddingBottom: '8rem', textAlign: 'center' } },
+            e('p', { style: { fontSize: '1.1rem', color: 'hsl(var(--muted-foreground))', marginBottom: '1rem' } }, 'No services yet'),
+            e('button', { className: 'btn btn-primary', style: { height: '2.5rem', padding: '0 1.25rem', gap: '0.5rem', display: 'flex', alignItems: 'center' }, onClick: () => { setDefaultSectionId(null); setDialogOpen(true); } },
+              e(Icons.Plus, { size: 'sm' }), ' Add your first service'
+            )
+          )
+        )
+      )
+    ),
+
+    // Dialog
+    e(AddServiceDialog, {
+      open: dialogOpen,
+      onClose: () => { setDialogOpen(false); setEditingService(null); setDefaultSectionId(null); },
+      sections, defaultSectionId, onSave: addService,
+      editingService, onUpdate: updateService,
+    }),
+
+    e(ToastContainer)
+  );
+}
+
+// ─── MOUNT ───
+ReactDOM.createRoot(document.getElementById('app')).render(e(Dashboard));
+</script>
+</body>
+</html>
