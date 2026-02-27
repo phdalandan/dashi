@@ -2,8 +2,7 @@
 
 Dashi is a lightweight static website served by Nginx inside a Debian LXC container running on Proxmox VE.
 
-This project was built as a hands-on infrastructure experiment.
-It is minimal, self-hosted, and intentionally simple.
+This project powers a personal dashboard designed to fit my specific needs and preferences.
 
 ⚠️ This entire project was purely vibe-coded.
 It works.
@@ -15,9 +14,9 @@ Use at your own risk.
 
 # 🧠 What This Is
 
-- A static HTML site
-- Hosted on Debian
-- Running inside a Proxmox LXC
+- A personal dashboard
+- Fully self-hosted
+- Running on Debian inside Proxmox LXC
 - Served by Nginx
 - Version controlled with Git
 - Synced to GitHub
@@ -26,6 +25,24 @@ No frameworks.
 No Docker.
 No orchestration.
 Just raw infrastructure and vibes.
+
+---
+
+# 🌐 Important: Internet Requirement
+
+This HTML file loads external libraries via CDN, including:
+
+- React (via CDN)
+- ReactDOM (via CDN)
+- Google Fonts
+
+Because of this:
+
+- ✅ The server or client must have internet access
+- ❌ The site will NOT work fully offline
+- ❌ If CDN access is blocked, the page may fail to render properly
+
+If offline capability is required, dependencies must be self-hosted locally.
 
 ---
 
@@ -143,15 +160,14 @@ Open:
 http://<container-ip>
 ```
 
-You should now see the Dashi homepage from this repository.
+You should now see the Dashi dashboard.
 
 If it works:
-Congratulations.
-You are now self-hosting.
+You are now self-hosting your own dashboard.
 
 ---
 
-# 🔄 Updating the Site
+# 🔄 Updating the Dashboard
 
 If the repo lives inside `/var/www/html`:
 
@@ -172,13 +188,14 @@ Done.
 ```
 
 Simple.
-Intentionally.
+Intentional.
+Custom.
 
 ---
 
 # ⚠️ Important Disclaimer
 
-This project was built for experimentation and learning.
+This project is tailored to personal needs and preferences.
 
 It has:
 - No production hardening
@@ -196,6 +213,20 @@ Before exposing this server to the public internet:
 You are responsible for your infrastructure.
 
 Deploy thoughtfully.
+
+---
+
+# 🎯 Purpose
+
+Dashi exists to provide a clean, self-hosted dashboard tailored to my workflow, preferences, and daily needs.
+
+It prioritizes:
+- Simplicity
+- Control
+- Customization
+- Independence from third-party hosting platforms
+
+This is infrastructure built to serve me.
 
 ---
 
